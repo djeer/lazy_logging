@@ -8,7 +8,8 @@ from .log_json_formatter import LogstashFormatter
 
 
 def logger_factory(logger_name: str = '', message_type: str = 'lazy_logs', level='INFO', fmt=None, json_stdout=False,
-                   json_file=True, log_dir: str = None, log_file: str = None, append_pid: bool = True):
+                   json_file=True, log_dir: str = None, log_file: str = None, append_pid: bool = True,
+                   propagate: bool = False):
     # formatters
     json_formatter = LogstashFormatter(
         message_type=message_type,
@@ -34,7 +35,7 @@ def logger_factory(logger_name: str = '', message_type: str = 'lazy_logs', level
     app_logger = logging.getLogger(logger_name)
     app_logger.setLevel(level)
     app_logger.addHandler(stdout_handler)
-    app_logger.propagate = False
+    app_logger.propagate = propagate
 
     if not log_file:
         return app_logger
