@@ -8,7 +8,7 @@ with open('requirements.txt') as f:
 
 setuptools.setup(
     name="lazy_logging",
-    version="0.0.1",
+    version="0.0.2",
     install_requires=requirements,
     author="djer",
     author_email="djer@github.com",

@@ -9,7 +9,7 @@ def optional_setting(name: str):
         return None
 
 
-def configure_django_logging(logger_name=None, level='INFO', json_stdout=False, json_file=True) -> None:
+def configure_django_logging(logger_name=None, level='INFO', json_stdout=False, json_file=True):
 
     log_dir = optional_setting('LOG_DIR')
     log_file = optional_setting('LOG_FILE')
@@ -19,10 +19,12 @@ def configure_django_logging(logger_name=None, level='INFO', json_stdout=False, 
     if logger_name:
         app_names = [logger_name, ]
     else:
-        app_names = ['', 'django', *settings.INSTALLED_APPS]
+        app_names = ['', *settings.INSTALLED_APPS, 'django']
 
     for app in app_names:
-        logger_factory(logger_name=app, message_type=app, level=level,
+        logger = logger_factory(logger_name=app, message_type=app, level=level,
                        json_stdout=json_stdout, json_file=json_file,
                        log_dir=log_dir, log_file=log_file,
                        append_pid=append_pid, fmt=log_fmt)
+
+    return logger  # <logger_name> or django
