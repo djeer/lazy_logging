@@ -1,20 +1,24 @@
+from logging import Logger
+
 from .logger_factory import logger_factory
 from django.conf import settings
 
 
-def optional_setting(name: str):
+def optional_setting(name: str, default=None):
     if hasattr(settings, name):
         return getattr(settings, name)
     else:
-        return None
+        return default
 
 
-def configure_django_logging(logger_name=None, level='INFO', json_stdout=False, json_file=True):
+def configure_django_logging(logger_name=None, level='INFO', is_command=False) -> Logger:
 
     log_dir = optional_setting('LOG_DIR')
     log_file = optional_setting('LOG_FILE')
     log_fmt = optional_setting('LOG_FMT')
-    append_pid = optional_setting('LOG_APPEND_PID')
+    json_stdout = optional_setting('LOG_JSON_STDOUT', default=False)
+    json_file = optional_setting('LOG_JSON_FILE', default=True)
+    append_pid = optional_setting('LOG_APPEND_PID', default=is_command)
 
     if logger_name:
         app_names = [logger_name, ]
